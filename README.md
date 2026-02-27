@@ -82,5 +82,7 @@ uvicorn main:app --reload --port 8000
 Public speaking is a critical soft skill often neglected in traditional education due to a lack of resources for one-on-one coaching. ORATOR democratizes access to expert-level feedback. By utilizing Microsoft Azure's robust prosody and fluency metrics combined with targeted LLM prompting, we provide an affordable, highly scalable tool for educational institutions worldwide.
 
 👥 Team
-Rafael Ibayev - Full Stack Developer / AI Integration
+Rafael Ibayev - Full Stack Developer
 Roni Osipov - Web developer
+Elene Samsiani - Frontend Designer
+Karina Osipovi - AI Integration

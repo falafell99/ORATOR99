@@ -1,0 +1,17 @@
+export const TOPICS = [
+  "Multitasking",
+  "Health",
+  "Loneliness",
+  "Rumors",
+  "The golden hour",
+  "The narrow focus",
+  "Tradition vs innovation",
+  "The easy choice vs the right choice",
+  "Wake-up call",
+  "Baby steps",
+  "The comfort zone",
+  "First impressions",
+  "Social media",
+  "Silence",
+  "Forgiveness",
+];

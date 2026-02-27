@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { TOPICS } from "@/data/topics";
+import { TOPICS_EN, TOPICS_HU, type Lang, t } from "@/data/i18n";
 import HomeView from "@/components/HomeView";
 import TimerView from "@/components/TimerView";
 import AnalyzingView from "@/components/AnalyzingView";
@@ -11,6 +11,7 @@ type AppState = "HOME" | "TIMER" | "ANALYZING" | "RESULTS";
 
 const Index = () => {
   const [state, setState] = useState<AppState>("HOME");
+  const [lang, setLang] = useState<Lang>("en");
   const [currentTopicIndex, setCurrentTopicIndex] = useState(2);
   const [isSpinning, setIsSpinning] = useState(false);
   const [analysisResults, setAnalysisResults] = useState<AnalysisResult | null>(null);
@@ -18,7 +19,9 @@ const Index = () => {
   const audioBlobRef = useRef<Blob | null>(null);
   const transcriptRef = useRef<string>("");
 
-  const selectedTopic = TOPICS[currentTopicIndex];
+  const topics = lang === "hu" ? TOPICS_HU : TOPICS_EN;
+  const tr = t(lang);
+  const selectedTopic = topics[currentTopicIndex % topics.length];
 
   const handleSpin = useCallback(() => {
     if (isSpinning) return;
@@ -27,16 +30,15 @@ const Index = () => {
     let count = 0;
     const totalTicks = 20;
     const interval = setInterval(() => {
-      setCurrentTopicIndex((prev) => (prev + 1) % TOPICS.length);
+      setCurrentTopicIndex((prev) => (prev + 1) % topics.length);
       count++;
       if (count >= totalTicks) {
         clearInterval(interval);
-        const finalIndex = Math.floor(Math.random() * TOPICS.length);
-        setCurrentTopicIndex(finalIndex);
+        setCurrentTopicIndex(Math.floor(Math.random() * topics.length));
         setIsSpinning(false);
       }
     }, 75);
-  }, [isSpinning]);
+  }, [isSpinning, topics.length]);
 
   const handleStartTimer = () => setState("TIMER");
   const handleBack = () => setState("HOME");
@@ -52,18 +54,16 @@ const Index = () => {
     setState("HOME");
   };
 
-  // Analyzing: call backend
   useEffect(() => {
     if (state === "ANALYZING") {
       const blob = audioBlobRef.current || new Blob();
       const text = transcriptRef.current;
-
-      analyzeAudio(blob, text).then((results) => {
+      analyzeAudio(blob, text, lang).then((results) => {
         setAnalysisResults(results);
         setState("RESULTS");
       });
     }
-  }, [state]);
+  }, [state, lang]);
 
   const defaultResults: AnalysisResult = {
     fluencyScore: 0,
@@ -78,60 +78,32 @@ const Index = () => {
     <div className="min-h-screen bg-background overflow-hidden">
       <AnimatePresence mode="wait">
         {state === "HOME" && (
-          <motion.div
-            key="home"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
+          <motion.div key="home" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
             <HomeView
-              topics={TOPICS}
-              currentTopicIndex={currentTopicIndex}
+              topics={topics}
+              currentTopicIndex={currentTopicIndex % topics.length}
               isSpinning={isSpinning}
               onSpin={handleSpin}
               onStartTimer={handleStartTimer}
+              lang={lang}
+              onLangChange={setLang}
+              t={tr}
             />
           </motion.div>
         )}
         {state === "TIMER" && (
-          <motion.div
-            key="timer"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <TimerView
-              topic={selectedTopic}
-              onBack={handleBack}
-              onTimerEnd={handleTimerEnd}
-            />
+          <motion.div key="timer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <TimerView topic={selectedTopic} onBack={handleBack} onTimerEnd={handleTimerEnd} lang={lang} t={tr} />
           </motion.div>
         )}
         {state === "ANALYZING" && (
-          <motion.div
-            key="analyzing"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <AnalyzingView />
+          <motion.div key="analyzing" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <AnalyzingView t={tr} />
           </motion.div>
         )}
         {state === "RESULTS" && (
-          <motion.div
-            key="results"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <ResultsView
-              onReset={handleReset}
-              results={analysisResults || defaultResults}
-            />
+          <motion.div key="results" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
+            <ResultsView onReset={handleReset} results={analysisResults || defaultResults} t={tr} />
           </motion.div>
         )}
       </AnimatePresence>

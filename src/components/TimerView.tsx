@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, RotateCcw, Play, Square, Mic } from "lucide-react";
+import type { Lang, Translations } from "@/data/i18n";
 
 interface TimerViewProps {
   topic: string;
   onBack: () => void;
   onTimerEnd: (audioBlob: Blob | null, transcript: string) => void;
+  lang: Lang;
+  t: Translations;
 }
 
-const TimerView = ({ topic, onBack, onTimerEnd }: TimerViewProps) => {
+const TimerView = ({ topic, onBack, onTimerEnd, lang, t: tr }: TimerViewProps) => {
   const [totalSeconds, setTotalSeconds] = useState(60);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const [isRunning, setIsRunning] = useState(false);
@@ -23,13 +26,11 @@ const TimerView = ({ topic, onBack, onTimerEnd }: TimerViewProps) => {
   const streamRef = useRef<MediaStream | null>(null);
 
   const stopEverything = useCallback(() => {
-    // Stop timer
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
 
-    // Stop media recorder
     let audioBlob: Blob | null = null;
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
       mediaRecorderRef.current.stop();
@@ -38,13 +39,11 @@ const TimerView = ({ topic, onBack, onTimerEnd }: TimerViewProps) => {
       audioBlob = new Blob(chunksRef.current, { type: "audio/webm" });
     }
 
-    // Stop speech recognition
     if (recognitionRef.current) {
       recognitionRef.current.stop();
       recognitionRef.current = null;
     }
 
-    // Stop media stream
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((t) => t.stop());
       streamRef.current = null;
@@ -54,17 +53,10 @@ const TimerView = ({ topic, onBack, onTimerEnd }: TimerViewProps) => {
     return audioBlob;
   }, []);
 
-  // Timer countdown
   useEffect(() => {
     if (isRunning && secondsLeft > 0) {
       intervalRef.current = setInterval(() => {
-        setSecondsLeft((s) => {
-          if (s <= 1) {
-            // Timer done — will be handled by the effect below
-            return 0;
-          }
-          return s - 1;
-        });
+        setSecondsLeft((s) => (s <= 1 ? 0 : s - 1));
       }, 1000);
     }
     return () => {
@@ -72,7 +64,6 @@ const TimerView = ({ topic, onBack, onTimerEnd }: TimerViewProps) => {
     };
   }, [isRunning]);
 
-  // When timer hits 0
   useEffect(() => {
     if (isRunning && secondsLeft === 0) {
       const blob = stopEverything();
@@ -87,7 +78,6 @@ const TimerView = ({ topic, onBack, onTimerEnd }: TimerViewProps) => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
-      // MediaRecorder
       const recorder = new MediaRecorder(stream);
       chunksRef.current = [];
       recorder.ondataavailable = (e) => {
@@ -96,13 +86,12 @@ const TimerView = ({ topic, onBack, onTimerEnd }: TimerViewProps) => {
       recorder.start();
       mediaRecorderRef.current = recorder;
 
-      // SpeechRecognition
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.lang = "en-US";
+        recognition.lang = lang === "hu" ? "hu-HU" : "en-US";
 
         recognition.onresult = (event: any) => {
           let interim = "";
@@ -172,17 +161,17 @@ const TimerView = ({ topic, onBack, onTimerEnd }: TimerViewProps) => {
           onClick={() => { stopEverything(); onBack(); }}
           className="flex items-center gap-1 text-foreground font-sans text-sm hover:opacity-70 transition-opacity"
         >
-          <ArrowLeft size={16} /> Back
+          <ArrowLeft size={16} /> {tr.back}
         </button>
         <p className="font-handwriting text-foreground text-lg sm:text-xl -rotate-3 flex items-center gap-1">
-          Baby steps to the Mic
+          {tr.tagline}
           <span className="text-xs text-muted-foreground">©</span>
         </p>
       </div>
 
       {/* Topic */}
       <div className="mt-6 text-center">
-        <p className="text-xs font-sans tracking-[0.2em] text-muted-foreground uppercase">Topic:</p>
+        <p className="text-xs font-sans tracking-[0.2em] text-muted-foreground uppercase">{tr.topicLabel}</p>
         <h2 className="font-serif text-3xl sm:text-4xl font-bold text-foreground mt-1">{topic}</h2>
       </div>
 
@@ -233,7 +222,7 @@ const TimerView = ({ topic, onBack, onTimerEnd }: TimerViewProps) => {
         </AnimatePresence>
         {isRunning && !displayTranscript && (
           <p className="font-handwriting text-lg text-muted-foreground/50 italic">
-            Start speaking...
+            {tr.startSpeaking}
           </p>
         )}
       </div>

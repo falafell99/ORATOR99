@@ -14,7 +14,7 @@
 This project directly addresses the **Education Challenge** by providing a scalable, stress-free environment for students to practice thesis defenses, presentations, and everyday communication.
 
 ## 🎥 Hackathon Deliverables
-* **YouTube Demo (max 2 mins):**
+* **YouTube Demo (max 2 mins):** https://youtu.be/ok3tHQ2btQY?feature=shared
 * **Presentation Slides:** 
 * **Live Prototype:** https://orator-99.vercel.app
 

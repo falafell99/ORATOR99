@@ -1,73 +1,86 @@
-# Welcome to your Lovable project
+Markdown
+# 🎤 ORATOR 
+> **"Baby steps to the mic. Giant leaps in confidence."**
 
-## Project info
+🏆 **Submission for the GDE MIT Hackathon 2026 (Education Track)** 📍 *Gábor Dénes University, Budapest*
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+[![Powered by Azure](https://img.shields.io/badge/Powered%20by-Microsoft%20Azure%20AI-blue?style=for-the-badge)](https://azure.microsoft.com/)
+[![Frontend](https://img.shields.io/badge/Frontend-React%20%7C%20Tailwind-61DAFB?style=for-the-badge&logo=react&logoColor=black)]()
+[![Backend](https://img.shields.io/badge/Backend-Python%20%7C%20FastAPI-3776AB?style=for-the-badge&logo=python&logoColor=white)]()
 
-## How can I edit this code?
+## 📌 Project Overview
+**ORATOR** is a gamified, bilingual (English & Hungarian) web application designed to help students and professionals overcome the fear of public speaking (glossophobia). By combining impromptu topic generation with real-time AI analysis, ORATOR serves as a 24/7 personal speaking coach.
 
-There are several ways of editing your application.
+This project directly addresses the **Education Challenge** by providing a scalable, stress-free environment for students to practice thesis defenses, presentations, and everyday communication.
 
-**Use Lovable**
+## 🎥 Hackathon Deliverables
+* **YouTube Demo (max 2 mins):** [Link to your video here]
+* **Presentation Slides:** [Link to your pitch deck here]
+* **Live Prototype:** [Link to Vercel/Render deployment if available]
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## ✨ Key Features
+1. **🎲 Impromptu Roulette:** Gamified random topic generator to simulate on-the-spot speaking scenarios.
+2. **🎙️ Real-time Transcription:** Uses browser-native Speech Recognition to display spoken words instantly on screen.
+3. **🇭🇺 Bilingual Support:** Full UI and speech-recognition support for both English (`en-US`) and Hungarian (`hu-HU`).
+4. **🧠 Azure Pronunciation Assessment:** Deep integration with Azure AI to provide precise, industry-standard metrics:
+   * **Fluency Score**
+   * **Pronunciation Score**
+   * **Prosody (Intonation) Score**
+5. **🤖 AI Coaching (LLM):** Advanced prompt engineering generates actionable feedback (Strengths & Areas to Improve) based on the specific transcript.
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🏗️ Architecture & Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Frontend (Client)
+* **Framework:** React + Vite
+* **Styling:** Tailwind CSS + `shadcn/ui`
+* **Animations:** Framer Motion (for smooth, stress-reducing UI transitions)
+* **Audio Handling:** Native Web Speech API & MediaRecorder
 
-Follow these steps:
+### Backend (Server)
+* **Framework:** Python / FastAPI
+* **AI & Machine Learning:** * Microsoft Azure AI Speech (Pronunciation Assessment)
+  * OpenAI / Gemini API (for contextual LLM feedback generation)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🚀 How to Run Locally
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Prerequisites
+* Node.js (v18+)
+* Python 3.10+
+* Azure AI Speech API Key
+* LLM API Key (OpenAI or Gemini)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+### 1. Frontend Setup
+```bash
+cd frontend
+npm install
 npm run dev
-```
+The frontend will run on http://localhost:8080 (or similar).
 
-**Edit a file directly in GitHub**
+2. Backend Setup
+Bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+pip install -r requirements.txt
+Create a .env file in the backend directory:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Code snippet
+AZURE_SPEECH_KEY=your_azure_key
+AZURE_REGION=your_azure_region
+LLM_API_KEY=your_llm_api_key
+Run the FastAPI server:
 
-**Use GitHub Codespaces**
+Bash
+uvicorn main:app --reload --port 8000
+🎯 The Impact (Why it matters)
+Public speaking is a critical soft skill often neglected in traditional education due to a lack of resources for one-on-one coaching. ORATOR democratizes access to expert-level feedback. By utilizing Microsoft Azure's robust prosody and fluency metrics combined with targeted LLM prompting, we provide an affordable, highly scalable tool for educational institutions worldwide.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+👥 Team
+Rafael Ibayev - Full Stack Developer / AI Integration
+Roni Osipov - Web developer

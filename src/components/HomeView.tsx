@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import AzureBadge from "./AzureBadge";
 
 interface HomeViewProps {
   topics: string[];
@@ -100,7 +101,7 @@ const HomeView = ({ topics, currentTopicIndex, isSpinning, onSpin, onStartTimer 
       </div>
 
       {/* Bottom Actions */}
-      <div className="flex items-center justify-center gap-4 pb-10 sm:pb-16">
+      <div className="flex items-center justify-center gap-4 pb-6 sm:pb-10">
         <button
           onClick={onSpin}
           disabled={isSpinning}
@@ -114,6 +115,9 @@ const HomeView = ({ topics, currentTopicIndex, isSpinning, onSpin, onStartTimer 
         >
           Start Timer <ArrowRight size={18} />
         </button>
+      </div>
+      <div className="pb-4 sm:pb-6">
+        <AzureBadge />
       </div>
     </div>
   );

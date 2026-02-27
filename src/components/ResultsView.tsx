@@ -1,34 +1,31 @@
 import { motion } from "framer-motion";
+import type { AnalysisResult } from "@/services/analyzeAudio";
+import AzureBadge from "./AzureBadge";
 
 interface ResultsViewProps {
   onReset: () => void;
+  results: AnalysisResult;
 }
 
-const ResultsView = ({ onReset }: ResultsViewProps) => {
+const ResultsView = ({ onReset, results }: ResultsViewProps) => {
   const metrics = [
-    { label: "Pace", value: "125 WPM", color: "text-success" },
-    { label: "Filler Words", value: "4 detected", color: "text-warning" },
-    { label: "Confidence Score", value: "88%", color: "text-accent" },
-  ];
-
-  const positives = [
-    "Great use of pauses for emphasis — kept the audience engaged.",
-    "Strong opening that immediately established your point of view.",
-  ];
-
-  const improvements = [
-    "Try reducing filler words like 'um' and 'like' — pause silently instead.",
-    "Your closing could be stronger — end with a memorable statement or call to action.",
+    { label: "Fluency Score", value: `${results.fluencyScore}/100`, color: "text-success" },
+    { label: "Pronunciation Score", value: `${results.pronunciationScore}/100`, color: "text-warning" },
+    { label: "Prosody Score", value: `${results.prosodyScore}/100`, color: "text-accent" },
   ];
 
   return (
     <div className="min-h-screen flex flex-col items-center px-6 py-10 sm:py-16">
+      <div className="w-full flex justify-end mb-4">
+        <AzureBadge />
+      </div>
+
       <h1 className="font-serif text-3xl sm:text-5xl font-bold text-foreground mb-10">
         Your Speech Analysis
       </h1>
 
       {/* Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-3xl mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-3xl mb-10">
         {metrics.map((m, i) => (
           <motion.div
             key={m.label}
@@ -43,16 +40,50 @@ const ResultsView = ({ onReset }: ResultsViewProps) => {
         ))}
       </div>
 
+      {/* Word-Level Analysis */}
+      {results.words.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="w-full max-w-3xl mb-10"
+        >
+          <h3 className="font-serif text-lg font-semibold text-foreground mb-3">
+            📝 Word-Level Analysis
+          </h3>
+          <div className="bg-card rounded-xl p-6 shadow-sm">
+            <div className="flex flex-wrap gap-1.5 leading-relaxed">
+              {results.words.map((w, i) => (
+                <span
+                  key={i}
+                  className={`font-sans text-base px-1 rounded ${
+                    w.accuracyScore < 75
+                      ? "bg-destructive/15 text-destructive font-medium"
+                      : "text-foreground"
+                  }`}
+                  title={`Score: ${w.accuracyScore} | ${w.errorType}`}
+                >
+                  {w.word}
+                </span>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-3 font-sans">
+              Hover over words to see individual scores. <span className="text-destructive">Red words</span> need improvement.
+            </p>
+          </div>
+        </motion.div>
+      )}
+
       {/* Feedback */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-3xl mb-12">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.6 }}
         >
           <h3 className="font-serif text-lg font-semibold text-foreground mb-3">🟢 What went well</h3>
           <ul className="space-y-2">
-            {positives.map((p, i) => (
+            {results.positives.map((p, i) => (
               <li key={i} className="text-sm font-sans text-muted-foreground leading-relaxed">• {p}</li>
             ))}
           </ul>
@@ -60,11 +91,11 @@ const ResultsView = ({ onReset }: ResultsViewProps) => {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.7 }}
         >
           <h3 className="font-serif text-lg font-semibold text-foreground mb-3">🎯 Areas to improve</h3>
           <ul className="space-y-2">
-            {improvements.map((p, i) => (
+            {results.improvements.map((p, i) => (
               <li key={i} className="text-sm font-sans text-muted-foreground leading-relaxed">• {p}</li>
             ))}
           </ul>

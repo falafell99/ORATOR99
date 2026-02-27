@@ -1,17 +1,19 @@
 import { motion } from "framer-motion";
 import type { AnalysisResult } from "@/services/analyzeAudio";
+import type { Translations } from "@/data/i18n";
 import AzureBadge from "./AzureBadge";
 
 interface ResultsViewProps {
   onReset: () => void;
   results: AnalysisResult;
+  t: Translations;
 }
 
-const ResultsView = ({ onReset, results }: ResultsViewProps) => {
+const ResultsView = ({ onReset, results, t: tr }: ResultsViewProps) => {
   const metrics = [
-    { label: "Fluency Score", value: `${results.fluencyScore}/100`, color: "text-success" },
-    { label: "Pronunciation Score", value: `${results.pronunciationScore}/100`, color: "text-warning" },
-    { label: "Prosody Score", value: `${results.prosodyScore}/100`, color: "text-accent" },
+    { label: tr.fluency, value: `${results.fluencyScore}/100`, color: "text-success" },
+    { label: tr.pronunciation, value: `${results.pronunciationScore}/100`, color: "text-warning" },
+    { label: tr.prosody, value: `${results.prosodyScore}/100`, color: "text-accent" },
   ];
 
   return (
@@ -21,7 +23,7 @@ const ResultsView = ({ onReset, results }: ResultsViewProps) => {
       </div>
 
       <h1 className="font-serif text-3xl sm:text-5xl font-bold text-foreground mb-10">
-        Your Speech Analysis
+        {tr.resultsTitle}
       </h1>
 
       {/* Metrics */}
@@ -49,7 +51,7 @@ const ResultsView = ({ onReset, results }: ResultsViewProps) => {
           className="w-full max-w-3xl mb-10"
         >
           <h3 className="font-serif text-lg font-semibold text-foreground mb-3">
-            📝 Word-Level Analysis
+            {tr.wordAnalysis}
           </h3>
           <div className="bg-card rounded-xl p-6 shadow-sm">
             <div className="flex flex-wrap gap-1.5 leading-relaxed">
@@ -68,7 +70,7 @@ const ResultsView = ({ onReset, results }: ResultsViewProps) => {
               ))}
             </div>
             <p className="text-xs text-muted-foreground mt-3 font-sans">
-              Hover over words to see individual scores. <span className="text-destructive">Red words</span> need improvement.
+              {tr.wordHint} <span className="text-destructive">{tr.wordRedHint}</span> {tr.needImprovement}
             </p>
           </div>
         </motion.div>
@@ -81,7 +83,7 @@ const ResultsView = ({ onReset, results }: ResultsViewProps) => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <h3 className="font-serif text-lg font-semibold text-foreground mb-3">🟢 What went well</h3>
+          <h3 className="font-serif text-lg font-semibold text-foreground mb-3">{tr.whatWentWell}</h3>
           <ul className="space-y-2">
             {results.positives.map((p, i) => (
               <li key={i} className="text-sm font-sans text-muted-foreground leading-relaxed">• {p}</li>
@@ -93,7 +95,7 @@ const ResultsView = ({ onReset, results }: ResultsViewProps) => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.7 }}
         >
-          <h3 className="font-serif text-lg font-semibold text-foreground mb-3">🎯 Areas to improve</h3>
+          <h3 className="font-serif text-lg font-semibold text-foreground mb-3">{tr.areasToImprove}</h3>
           <ul className="space-y-2">
             {results.improvements.map((p, i) => (
               <li key={i} className="text-sm font-sans text-muted-foreground leading-relaxed">• {p}</li>
@@ -106,7 +108,7 @@ const ResultsView = ({ onReset, results }: ResultsViewProps) => {
         onClick={onReset}
         className="bg-primary text-primary-foreground font-sans font-semibold px-10 py-3.5 rounded-full text-lg hover:opacity-90 transition-opacity"
       >
-        Practice Another Topic
+        {tr.practiceAnother}
       </button>
     </div>
   );

@@ -8,7 +8,7 @@
 [![Backend](https://img.shields.io/badge/Backend-Python%20%7C%20FastAPI-3776AB?style=for-the-badge&logo=python&logoColor=white)]()
 
 ## 📌 Project Overview
-**ORATOR** is a gamified, bilingual (English & Hungarian) web application designed to help students and professionals overcome the fear of public speaking (glossophobia). By combining impromptu topic generation with real-time AI analysis, ORATOR serves as a 24/7 personal speaking coach.
+**ORATOR** is a gamified, bilingual (English & Hungarian) web application designed to help students and professionals overcome the fear of public speaking (**glossophobia**). By combining impromptu topic generation with real-time AI analysis, ORATOR serves as a 24/7 personal speaking coach.
 
 This project directly addresses the **Education Challenge** by providing a scalable, stress-free environment for students to practice thesis defenses, presentations, and everyday communication.
 
@@ -56,11 +56,9 @@ This project directly addresses the **Education Challenge** by providing a scala
 
 ### 1. Frontend Setup
 ```bash
-cd frontend
+cd ORATOR99
 npm install
 npm run dev
-The frontend will run on http://localhost:8080 (or similar).
-
 2. Backend Setup
 Bash
 cd backend
@@ -76,12 +74,12 @@ LLM_API_KEY=your_llm_api_key
 Run the FastAPI server:
 
 Bash
-uvicorn main:app --reload --port 8000
+python3 main.py
 🎯 The Impact (Why it matters)
-Public speaking is a critical soft skill often neglected in traditional education due to a lack of resources for one-on-one coaching. ORATOR democratizes access to expert-level feedback. By utilizing Microsoft Azure's robust prosody and fluency metrics combined with targeted LLM prompting, we provide an affordable, highly scalable tool for educational institutions worldwide.
+Public speaking is a critical soft skill often neglected in traditional education due to a lack of resources for one-on-one coaching. ORATOR democratizes access to expert-level feedback. By utilizing Microsoft Azure's robust metrics combined with targeted LLM prompting, we provide an affordable, highly scalable tool for educational institutions worldwide.
 
 👥 Team
 Rafael Ibayev - Full Stack Developer
-Roni Osipov - Web developer
+Roni Osipov - Web Developer
 Elene Samsiani - Frontend Designer
 Karina Osipovi - AI Integration

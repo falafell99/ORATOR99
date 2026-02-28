@@ -15,7 +15,7 @@ This project directly addresses the **Education Challenge** by providing a scala
 
 ## 🎥 Hackathon Deliverables
 * **YouTube Demo (max 2 mins):** https://youtu.be/ok3tHQ2btQY?feature=shared
-* **Presentation Slides:** 
+* **Presentation Slides:** https://drive.google.com/file/d/1jkPGfIYV_psNMBJ7C2SQdfKaoW0zvJ5o/view
 * **Live Prototype:** https://orator-99.vercel.app
 
 ---
